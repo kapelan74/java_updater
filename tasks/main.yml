@@ -1,5 +1,13 @@
 ---
 # tasks file for java_updater
  
+- name: Include Java URL 
+  include_vars: "jdk_{{ jdk_ver }}.yml"
+
+- name: Define jdk_url
+  set_fact:
+    jdk_url: "{{ url | string }}"
+
+# install tasks
 - include_tasks: install_Java.yml
 
