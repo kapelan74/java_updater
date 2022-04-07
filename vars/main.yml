@@ -1,0 +1,13 @@
+---
+# vars file for test_role
+
+# Java versions
+#jdk_ver: "18"
+#jdk_url: "https://download.java.net/openjdk/jdk18/ri/openjdk-18+36_linux-x64_bin.tar.gz"
+
+jdk_ver: "17.0.2"
+jdk_url: "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz"
+
+# Java home directory
+jdk_home: "/usr/lib/jvm"
+

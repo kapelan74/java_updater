@@ -1,0 +1,46 @@
+---
+- name: Search installed Java
+  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
+  register: java_version
+
+- debug:
+    var=java_version.stdout
+
+- name: Uninstall Java
+  block:
+    - name: Remove installed java
+      package:
+        name: java-*
+        state: absent
+
+    - name: Delete java home directory
+      file:
+        path: "{{ jdk_home }}"
+        state: absent
+  
+  when: java_version.stdout != "" and java_version.stdout != jdk_ver|string
+
+- name: Install Java
+  block:
+    - name: Create java home directory
+      file:
+        path: "{{ jdk_home }}"
+        state: directory
+        recurse: yes
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Download and unarchive java
+      unarchive:
+        src: "{{ jdk_url }}"
+        dest: "{{ jdk_home }}"
+        remote_src: yes
+
+    - name: Copy 'JAVA_HOME' script
+      template: 
+        src: java_home.sh.j2
+        dest: /etc/profile.d/java_home.sh
+        mode: 0644
+
+  when: java_version.stdout == "" or java_version.stdout != jdk_ver|string
